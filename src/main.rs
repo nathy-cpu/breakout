@@ -1,5 +1,6 @@
 use raylib::prelude::*;
 
+mod ball;
 mod paddle;
 
 const SCREEN_SIZE: i32 = 320;
@@ -13,6 +14,7 @@ fn main() {
         .build();
 
     let mut paddle = paddle::Paddle::new();
+    let mut ball = ball::Ball::new();
 
     let camera = Camera2D {
         zoom: WINDOW_SIZE as f32 / SCREEN_SIZE as f32, // Zoom in to fit canvas
@@ -23,11 +25,13 @@ fn main() {
 
     while !ray.window_should_close() {
         paddle.update(&ray);
+        ball.update(&ray);
 
         let mut draw_handle = ray.begin_drawing(&thread);
         draw_handle.clear_background(Color::SKYBLUE);
 
         let mut mode2d = draw_handle.begin_mode2D(camera);
         paddle.draw(&mut mode2d);
+        ball.draw(&mut mode2d);
     }
 }
