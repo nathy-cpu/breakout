@@ -22,7 +22,7 @@ impl Paddle {
     pub fn new() -> Self {
         Self {
             position: Vector2 {
-                x: 0.0,
+                x: (SCREEN_SIZE - PADDLE_WIDTH) as f32 / 2.0, // to start the paddle in the middle
                 y: PADDLE_POS_Y,
             },
             color: Color::GREEN,
@@ -31,7 +31,7 @@ impl Paddle {
     }
 
     pub fn update(&mut self, raylib_handle: &RaylibHandle) {
-        self.velocity = 0.0;
+        self.velocity = 0.0; // this avoids the paddle accelerating
         if raylib_handle.is_key_down(KeyboardKey::KEY_LEFT) {
             self.velocity -= PADDLE_SPEED;
         }
