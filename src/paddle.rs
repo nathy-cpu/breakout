@@ -1,17 +1,21 @@
 use raylib::{
     color::Color,
-    math::{Rectangle, Vector2},
-    prelude::{RaylibDraw, RaylibDrawHandle},
+    ffi::KeyboardKey,
+    math::Vector2,
+    prelude::{RaylibDraw, RaylibDrawHandle, RaylibHandle},
 };
 
-const PADDLE_WIDTH: f32 = 50.0;
-const PADDLE_HEIGHT: f32 = 6.0;
+use crate::SCREEN_SIZE;
+
+const PADDLE_WIDTH: i32 = 50;
+const PADDLE_HEIGHT: i32 = 6;
 const PADDLE_POS_Y: f32 = 260.0;
+const PADDLE_SPEED: f32 = 200.0;
 
 pub struct Paddle {
     position: Vector2,
-    rectangle: Rectangle,
     color: Color,
+    velocity: f32,
 }
 
 impl Paddle {
@@ -21,17 +25,33 @@ impl Paddle {
                 x: 0.0,
                 y: PADDLE_POS_Y,
             },
-            rectangle: Rectangle {
-                x: 0.0,
-                y: PADDLE_POS_Y,
-                width: PADDLE_WIDTH,
-                height: PADDLE_HEIGHT,
-            },
             color: Color::GREEN,
+            velocity: 0.0,
         }
     }
 
+    pub fn update(&mut self, raylib_handle: &RaylibHandle) {
+        self.velocity = 0.0;
+        if raylib_handle.is_key_down(KeyboardKey::KEY_LEFT) {
+            self.velocity -= PADDLE_SPEED;
+        }
+        if raylib_handle.is_key_down(KeyboardKey::KEY_RIGHT) {
+            self.velocity += PADDLE_SPEED;
+        }
+        self.position.x += self.velocity * raylib_handle.get_frame_time();
+        self.position.x = self
+            .position
+            .x
+            .clamp(0.0, (SCREEN_SIZE - PADDLE_WIDTH) as f32);
+    }
+
     pub fn draw(&self, draw_handle: &mut RaylibDrawHandle) {
-        draw_handle.draw_rectangle_rec(self.rectangle, self.color);
+        draw_handle.draw_rectangle(
+            self.position.x as i32,
+            self.position.y as i32,
+            PADDLE_WIDTH,
+            PADDLE_HEIGHT,
+            self.color,
+        );
     }
 }
