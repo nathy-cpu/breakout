@@ -10,14 +10,14 @@ pub const BLOCK_WIDTH: f32 = 28.0;
 pub const BLOCK_HEIGHT: f32 = 10.0;
 
 pub struct Blocks {
-    pub blocks: [[bool; NUM_BLOCKS_X]; NUM_BLOCKS_Y],
+    pub grid: [[bool; NUM_BLOCKS_X]; NUM_BLOCKS_Y],
     pub row_colors: [Color; NUM_BLOCKS_Y],
 }
 
 impl Blocks {
     pub fn new() -> Self {
         Self {
-            blocks: [[true; NUM_BLOCKS_X]; NUM_BLOCKS_Y],
+            grid: [[true; NUM_BLOCKS_X]; NUM_BLOCKS_Y],
             row_colors: [
                 Color::BLUE,
                 Color::BLUE,
@@ -35,7 +35,7 @@ impl Blocks {
         for y in 0..NUM_BLOCKS_Y {
             for x in 0..NUM_BLOCKS_X {
                 // dont ask why it just works
-                if self.blocks[y][x] {
+                if self.grid[y][x] {
                     let block_rect = Rectangle {
                         x: 20.0 + x as f32 * BLOCK_WIDTH,
                         y: 40.0 + y as f32 * BLOCK_HEIGHT,
