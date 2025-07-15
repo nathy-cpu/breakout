@@ -5,7 +5,7 @@ use raylib::{
     prelude::{RaylibDraw, RaylibDrawHandle},
 };
 
-use crate::SCREEN_SIZE;
+use crate::{SCREEN_SIZE, game::GameState};
 
 const BALL_START_POS_Y: f32 = 160.0;
 const BALL_SPEED: f32 = 250.0;
@@ -29,8 +29,15 @@ impl Ball {
         }
     }
 
-    pub fn update(&mut self, raylib_handle: &RaylibHandle) {
-        self.position += self.direction * BALL_SPEED * raylib_handle.get_frame_time();
+    pub fn update(&mut self, game_state: &GameState, raylib_handle: &RaylibHandle) {
+        let delta_time: f32;
+        if !game_state.started() {
+            delta_time = 0.0;
+        } else {
+            delta_time = raylib_handle.get_frame_time();
+        }
+
+        self.position += self.direction * BALL_SPEED * delta_time;
     }
 
     pub fn draw(&self, draw_handle: &mut RaylibDrawHandle) {

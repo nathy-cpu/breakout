@@ -5,7 +5,7 @@ use raylib::{
     prelude::{RaylibDraw, RaylibDrawHandle, RaylibHandle},
 };
 
-use crate::SCREEN_SIZE;
+use crate::{SCREEN_SIZE, game::GameState};
 
 const PADDLE_WIDTH: i32 = 50;
 const PADDLE_HEIGHT: i32 = 6;
@@ -30,7 +30,11 @@ impl Paddle {
         }
     }
 
-    pub fn update(&mut self, raylib_handle: &RaylibHandle) {
+    pub fn update(&mut self, game_state: &GameState, raylib_handle: &RaylibHandle) {
+        if !game_state.started() {
+            return;
+        }
+
         self.velocity = 0.0; // this avoids the paddle accelerating
         if raylib_handle.is_key_down(KeyboardKey::KEY_LEFT) {
             self.velocity -= PADDLE_SPEED;
