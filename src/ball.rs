@@ -1,19 +1,18 @@
 use raylib::{
-    RaylibHandle,
     color::Color,
     math::Vector2,
     prelude::{RaylibDraw, RaylibDrawHandle},
 };
 
-use crate::{SCREEN_SIZE, game::GameState};
+use crate::SCREEN_SIZE;
 
-const BALL_START_POS_Y: f32 = 160.0;
-const BALL_SPEED: f32 = 250.0;
+pub const BALL_START_POS_Y: f32 = 160.0;
+pub const BALL_SPEED: f32 = 250.0;
 pub struct Ball {
-    position: Vector2,
-    direction: Vector2,
-    radius: f32,
-    color: Color,
+    pub position: Vector2,
+    pub direction: Vector2,
+    pub radius: f32,
+    pub color: Color,
 }
 
 impl Ball {
@@ -26,16 +25,6 @@ impl Ball {
             direction: Vector2 { x: 0.0, y: 1.0 },
             radius: 4.0,
             color: Color::BLACK,
-        }
-    }
-
-    pub fn update(&mut self, game_state: &GameState, raylib_handle: &RaylibHandle) {
-        if !game_state.started() {
-            self.position.y = BALL_START_POS_Y;
-            self.position.x = (SCREEN_SIZE as f32 / 2.0)
-                + (raylib_handle.get_time().cos() * SCREEN_SIZE as f64 / 2.5) as f32;
-        } else {
-            self.position += self.direction * BALL_SPEED * raylib_handle.get_frame_time();
         }
     }
 

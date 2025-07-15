@@ -1,5 +1,7 @@
 use raylib::prelude::*;
 
+use crate::game::GameState;
+
 mod ball;
 mod game;
 mod paddle;
@@ -14,9 +16,7 @@ fn main() {
         .vsync()
         .build();
 
-    let mut paddle = paddle::Paddle::new();
-    let mut ball = ball::Ball::new();
-    let mut game = game::GameState::new();
+    let mut game = GameState::new();
 
     let camera = Camera2D {
         zoom: WINDOW_SIZE as f32 / SCREEN_SIZE as f32, // Zoom in to fit canvas
@@ -29,14 +29,11 @@ fn main() {
         if ray.is_key_down(KeyboardKey::KEY_SPACE) {
             game.start();
         }
-        paddle.update(&game, &ray);
-        ball.update(&game, &ray);
-
+        game.update(&ray);
         let mut draw_handle = ray.begin_drawing(&thread);
         draw_handle.clear_background(Color::SKYBLUE);
 
         let mut mode2d = draw_handle.begin_mode2D(camera);
-        paddle.draw(&mut mode2d);
-        ball.draw(&mut mode2d);
+        game.draw(&mut mode2d);
     }
 }

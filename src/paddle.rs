@@ -1,21 +1,19 @@
+use crate::SCREEN_SIZE;
 use raylib::{
     color::Color,
-    ffi::KeyboardKey,
     math::Vector2,
-    prelude::{RaylibDraw, RaylibDrawHandle, RaylibHandle},
+    prelude::{RaylibDraw, RaylibDrawHandle},
 };
 
-use crate::{SCREEN_SIZE, game::GameState};
-
-const PADDLE_WIDTH: i32 = 50;
-const PADDLE_HEIGHT: i32 = 6;
-const PADDLE_POS_Y: f32 = 260.0;
-const PADDLE_SPEED: f32 = 200.0;
+pub const PADDLE_WIDTH: i32 = 50;
+pub const PADDLE_HEIGHT: i32 = 6;
+pub const PADDLE_POS_Y: f32 = 260.0;
+pub const PADDLE_SPEED: f32 = 200.0;
 
 pub struct Paddle {
-    position: Vector2,
-    color: Color,
-    velocity: f32,
+    pub position: Vector2,
+    pub color: Color,
+    pub velocity: f32,
 }
 
 impl Paddle {
@@ -28,25 +26,6 @@ impl Paddle {
             color: Color::GREEN,
             velocity: 0.0,
         }
-    }
-
-    pub fn update(&mut self, game_state: &GameState, raylib_handle: &RaylibHandle) {
-        if !game_state.started() {
-            return;
-        }
-
-        self.velocity = 0.0; // this avoids the paddle accelerating
-        if raylib_handle.is_key_down(KeyboardKey::KEY_LEFT) {
-            self.velocity -= PADDLE_SPEED;
-        }
-        if raylib_handle.is_key_down(KeyboardKey::KEY_RIGHT) {
-            self.velocity += PADDLE_SPEED;
-        }
-        self.position.x += self.velocity * raylib_handle.get_frame_time();
-        self.position.x = self
-            .position
-            .x
-            .clamp(0.0, (SCREEN_SIZE - PADDLE_WIDTH) as f32);
     }
 
     pub fn draw(&self, draw_handle: &mut RaylibDrawHandle) {
