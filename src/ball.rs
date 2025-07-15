@@ -30,14 +30,13 @@ impl Ball {
     }
 
     pub fn update(&mut self, game_state: &GameState, raylib_handle: &RaylibHandle) {
-        let delta_time: f32;
         if !game_state.started() {
-            delta_time = 0.0;
+            self.position.y = BALL_START_POS_Y;
+            self.position.x = (SCREEN_SIZE as f32 / 2.0)
+                + (raylib_handle.get_time().cos() * SCREEN_SIZE as f64 / 2.5) as f32;
         } else {
-            delta_time = raylib_handle.get_frame_time();
+            self.position += self.direction * BALL_SPEED * raylib_handle.get_frame_time();
         }
-
-        self.position += self.direction * BALL_SPEED * delta_time;
     }
 
     pub fn draw(&self, draw_handle: &mut RaylibDrawHandle) {
