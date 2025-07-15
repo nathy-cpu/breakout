@@ -1,9 +1,9 @@
-use raylib::{RaylibHandle, ffi::KeyboardKey, prelude::RaylibDrawHandle};
+use raylib::{RaylibHandle, ffi::KeyboardKey, math::Vector2, prelude::RaylibDrawHandle};
 
 use crate::{
     SCREEN_SIZE,
     ball::{BALL_SPEED, BALL_START_POS_Y, Ball},
-    paddle::{PADDLE_HEIGHT, PADDLE_SPEED, Paddle},
+    paddle::{PADDLE_HEIGHT, PADDLE_POS_Y, PADDLE_SPEED, PADDLE_WIDTH, Paddle},
 };
 
 pub struct GameState {
@@ -23,6 +23,12 @@ impl GameState {
 
     pub fn start(&mut self) {
         self.started = true;
+        let paddle_middle = Vector2 {
+            x: self.paddle.position.x + (PADDLE_WIDTH as f32 / 2.0),
+            y: PADDLE_POS_Y,
+        };
+        let ball_to_paddle = paddle_middle - self.ball.position;
+        self.ball.direction = ball_to_paddle.normalized();
     }
 
     pub fn update(&mut self, raylib_handle: &RaylibHandle) {
