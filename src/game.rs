@@ -40,6 +40,10 @@ impl GameState {
         self.ball.direction = ball_to_paddle.normalized();
     }
 
+    pub fn restart(&mut self) {
+        *self = Self::new();
+    }
+
     pub fn update(&mut self, raylib_handle: &RaylibHandle) {
         // update ball
         let prev_ball_pos = self.ball.position;
@@ -57,13 +61,12 @@ impl GameState {
                 self.ball.position.x = BALL_RADIUS;
                 reflect(&mut self.ball.direction, Vector2 { x: 1.0, y: 0.0 });
             }
-            if self.ball.position.y + BALL_RADIUS > SCREEN_SIZE as f32 {
-                self.ball.position.y = SCREEN_SIZE as f32 - BALL_RADIUS;
-                reflect(&mut self.ball.direction, Vector2 { x: 0.0, y: -1.0 });
-            }
             if self.ball.position.y - BALL_RADIUS < 0.0 {
                 self.ball.position.y = BALL_RADIUS;
                 reflect(&mut self.ball.direction, Vector2 { x: 0.0, y: 1.0 });
+            }
+            if self.ball.position.y > SCREEN_SIZE as f32 + BALL_RADIUS * 9.0 {
+                self.restart();
             }
         }
 

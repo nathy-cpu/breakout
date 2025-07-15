@@ -8,7 +8,7 @@ use raylib::{
 pub const PADDLE_WIDTH: i32 = 50;
 pub const PADDLE_HEIGHT: i32 = 6;
 pub const PADDLE_POS_Y: f32 = 260.0;
-pub const PADDLE_SPEED: f32 = 200.0;
+pub const PADDLE_SPEED: f32 = 250.0;
 
 pub struct Paddle {
     pub position: Vector2,

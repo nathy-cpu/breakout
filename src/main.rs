@@ -1,10 +1,10 @@
 use raylib::prelude::*;
 
-use crate::game::GameState;
-
 mod ball;
 mod game;
 mod paddle;
+
+use crate::game::GameState;
 
 const SCREEN_SIZE: i32 = 320;
 const WINDOW_SIZE: i32 = 1000;
@@ -15,6 +15,7 @@ fn main() {
         .title("Breakout")
         .vsync()
         .build();
+    ray.set_target_fps(500);
 
     let mut game = GameState::new();
 
@@ -26,7 +27,7 @@ fn main() {
     };
 
     while !ray.window_should_close() {
-        if ray.is_key_down(KeyboardKey::KEY_SPACE) {
+        if !game.started() && ray.is_key_down(KeyboardKey::KEY_SPACE) {
             game.start();
         }
         game.update(&ray);
@@ -35,5 +36,6 @@ fn main() {
 
         let mut mode2d = draw_handle.begin_mode2D(camera);
         game.draw(&mut mode2d);
+        mode2d.draw_fps(0, 0);
     }
 }
