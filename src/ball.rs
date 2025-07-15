@@ -7,11 +7,11 @@ use raylib::{
 use crate::SCREEN_SIZE;
 
 pub const BALL_START_POS_Y: f32 = 160.0;
-pub const BALL_SPEED: f32 = 250.0;
+pub const BALL_SPEED: f32 = 320.0;
+pub const BALL_RADIUS: f32 = 4.0;
 pub struct Ball {
     pub position: Vector2,
     pub direction: Vector2,
-    pub radius: f32,
     pub color: Color,
 }
 
@@ -23,7 +23,6 @@ impl Ball {
                 y: BALL_START_POS_Y,
             },
             direction: Vector2 { x: 0.0, y: 1.0 },
-            radius: 4.0,
             color: Color::BLACK,
         }
     }
@@ -32,7 +31,7 @@ impl Ball {
         draw_handle.draw_circle(
             self.position.x as i32,
             self.position.y as i32,
-            self.radius,
+            BALL_RADIUS,
             self.color,
         );
     }
