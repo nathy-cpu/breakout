@@ -1,6 +1,7 @@
 use raylib::prelude::*;
 
 mod ball;
+mod blocks;
 mod game;
 mod paddle;
 
@@ -36,6 +37,5 @@ fn main() {
 
         let mut mode2d = draw_handle.begin_mode2D(camera);
         game.draw(&mut mode2d);
-        mode2d.draw_fps(0, 0);
     }
 }

@@ -8,6 +8,7 @@ use raylib::{
 use crate::{
     SCREEN_SIZE,
     ball::{BALL_RADIUS, BALL_SPEED, BALL_START_POS_Y, Ball},
+    blocks::Blocks,
     paddle::{PADDLE_HEIGHT, PADDLE_POS_Y, PADDLE_SPEED, PADDLE_WIDTH, Paddle},
 };
 
@@ -15,6 +16,7 @@ pub struct GameState {
     started: bool,
     ball: Ball,
     paddle: Paddle,
+    blocks: Blocks,
 }
 
 impl GameState {
@@ -23,6 +25,7 @@ impl GameState {
             started: false,
             ball: Ball::new(),
             paddle: Paddle::new(),
+            blocks: Blocks::new(),
         }
     }
 
@@ -119,6 +122,7 @@ impl GameState {
     pub fn draw(&self, draw_handle: &mut RaylibDrawHandle) {
         self.ball.draw(draw_handle);
         self.paddle.draw(draw_handle);
+        self.blocks.draw(draw_handle);
     }
 }
 
