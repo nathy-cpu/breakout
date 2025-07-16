@@ -20,13 +20,13 @@ impl Blocks {
         Self {
             grid: [[true; NUM_BLOCKS_X]; NUM_BLOCKS_Y],
             row_colors: [
-                Color::BLUE,
+                Color::PURPLE,
+                Color::VIOLET,
+                Color::BLUEVIOLET,
                 Color::BLUE,
                 Color::GREEN,
-                Color::GREEN,
+                Color::YELLOWGREEN,
                 Color::YELLOW,
-                Color::YELLOW,
-                Color::ORANGE,
                 Color::ORANGE,
             ],
             row_scores: [8, 7, 6, 5, 4, 3, 2, 1],

@@ -23,7 +23,7 @@ impl Ball {
                 y: BALL_START_POS_Y,
             },
             direction: Vector2 { x: 0.0, y: 1.0 },
-            color: Color::BLACK,
+            color: Color::RED,
         }
     }
 

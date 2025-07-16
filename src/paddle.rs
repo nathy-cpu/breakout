@@ -23,7 +23,7 @@ impl Paddle {
                 x: (SCREEN_SIZE - PADDLE_WIDTH) as f32 / 2.0, // to start the paddle in the middle
                 y: PADDLE_POS_Y,
             },
-            color: Color::GREEN,
+            color: Color::BLACK,
             velocity: 0.0,
         }
     }
