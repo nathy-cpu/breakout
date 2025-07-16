@@ -28,9 +28,6 @@ fn main() {
     };
 
     while !ray.window_should_close() {
-        if !game.started() && ray.is_key_pressed(KeyboardKey::KEY_SPACE) {
-            game.start();
-        }
         game.update(&ray);
         let mut draw_handle = ray.begin_drawing(&thread);
         draw_handle.clear_background(Color::SKYBLUE);
