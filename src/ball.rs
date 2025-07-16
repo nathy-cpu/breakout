@@ -7,7 +7,7 @@ use raylib::{
 use crate::SCREEN_SIZE;
 
 pub const BALL_START_POS_Y: f32 = 160.0;
-pub const BALL_SPEED: f32 = 320.0;
+pub const BALL_SPEED: f32 = 350.0;
 pub const BALL_RADIUS: f32 = 4.0;
 pub struct Ball {
     pub position: Vector2,

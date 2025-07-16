@@ -28,7 +28,7 @@ fn main() {
     };
 
     while !ray.window_should_close() {
-        if !game.started() && ray.is_key_down(KeyboardKey::KEY_SPACE) {
+        if !game.started() && ray.is_key_pressed(KeyboardKey::KEY_SPACE) {
             game.start();
         }
         game.update(&ray);

@@ -12,6 +12,7 @@ pub const BLOCK_HEIGHT: f32 = 10.0;
 pub struct Blocks {
     pub grid: [[bool; NUM_BLOCKS_X]; NUM_BLOCKS_Y],
     pub row_colors: [Color; NUM_BLOCKS_Y],
+    pub row_scores: [i32; NUM_BLOCKS_Y],
 }
 
 impl Blocks {
@@ -28,6 +29,7 @@ impl Blocks {
                 Color::ORANGE,
                 Color::ORANGE,
             ],
+            row_scores: [8, 7, 6, 5, 4, 3, 2, 1],
         }
     }
 
