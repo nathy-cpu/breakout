@@ -1,5 +1,6 @@
 use raylib::{
     RaylibHandle,
+    audio::{RaylibAudio, Sound},
     color::Color,
     ffi::KeyboardKey,
     math::{Rectangle, Vector2},
@@ -13,28 +14,32 @@ use crate::{
     paddle::{PADDLE_HEIGHT, PADDLE_POS_Y, PADDLE_SPEED, PADDLE_WIDTH, Paddle},
 };
 
-const DELTA_TIME: f32 = 1.0 / 60.0; // 16 ms or 0.016 s 
+const DELTA_TIME: f32 = 1.0 / 60.0; // 16 ms or 0.016 s
 
-pub struct GameState {
+pub struct GameState<'aud> {
     started: bool,
     game_over: bool,
     score: i32,
     accumilated_time: f32,
     ball: Ball,
-    paddle: Paddle,
-    blocks: Blocks,
+    paddle: Paddle<'aud>,
+    blocks: Blocks<'aud>,
+    game_over_sound: Sound<'aud>,
 }
 
-impl GameState {
-    pub fn new() -> Self {
+impl<'aud> GameState<'aud> {
+    pub fn new(audio_handle: &'aud RaylibAudio) -> Self {
         Self {
             started: false,
             game_over: false,
             score: 0,
             accumilated_time: 0.0,
             ball: Ball::new(),
-            paddle: Paddle::new(),
-            blocks: Blocks::new(),
+            paddle: Paddle::new(audio_handle),
+            blocks: Blocks::new(audio_handle),
+            game_over_sound: audio_handle
+                .new_sound("assets/game_over.wav")
+                .expect("Failed to load sound"),
         }
     }
 
@@ -49,15 +54,12 @@ impl GameState {
     }
 
     pub fn restart(&mut self) {
-        *self = Self {
-            started: false,
-            game_over: false,
-            score: 0,
-            accumilated_time: self.accumilated_time,
-            ball: Ball::new(),
-            paddle: Paddle::new(),
-            blocks: Blocks::new(),
-        };
+        self.started = false;
+        self.game_over = false;
+        self.score = 0;
+        self.ball.reset();
+        self.paddle.reset();
+        self.blocks.reset();
     }
 
     pub fn update(&mut self, raylib_handle: &RaylibHandle) {
@@ -98,6 +100,7 @@ impl GameState {
             }
             if !self.game_over && self.ball.position.y > SCREEN_SIZE as f32 + BALL_RADIUS * 9.0 {
                 self.game_over = true;
+                self.game_over_sound.play();
             }
             // update paddle
             self.paddle.velocity = 0.0; // this avoids the paddle accelerating
@@ -142,6 +145,8 @@ impl GameState {
                 if collision_normal != Vector2::zero() {
                     reflect(&mut self.ball.direction, collision_normal.normalized());
                 }
+
+                self.paddle.hit_sound.play();
             }
 
             // update blocks
@@ -191,6 +196,7 @@ impl GameState {
                             }
                             self.blocks.grid[y][x] = false;
                             self.score += self.blocks.row_scores[y];
+                            self.blocks.hit_sound.play();
                             break 'outer;
                         }
                     }

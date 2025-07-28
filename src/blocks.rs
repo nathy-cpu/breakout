@@ -1,4 +1,5 @@
 use raylib::{
+    audio::{RaylibAudio, Sound},
     color::Color,
     math::{Rectangle, Vector2},
     prelude::{RaylibDraw, RaylibDrawHandle},
@@ -9,14 +10,15 @@ pub const NUM_BLOCKS_Y: usize = 8;
 pub const BLOCK_WIDTH: f32 = 28.0;
 pub const BLOCK_HEIGHT: f32 = 10.0;
 
-pub struct Blocks {
+pub struct Blocks<'aud> {
     pub grid: [[bool; NUM_BLOCKS_X]; NUM_BLOCKS_Y],
     pub row_colors: [Color; NUM_BLOCKS_Y],
     pub row_scores: [i32; NUM_BLOCKS_Y],
+    pub hit_sound: Sound<'aud>,
 }
 
-impl Blocks {
-    pub fn new() -> Self {
+impl<'aud> Blocks<'aud> {
+    pub fn new(audio_handle: &'aud RaylibAudio) -> Self {
         Self {
             grid: [[true; NUM_BLOCKS_X]; NUM_BLOCKS_Y],
             row_colors: [
@@ -30,7 +32,14 @@ impl Blocks {
                 Color::ORANGE,
             ],
             row_scores: [8, 7, 6, 5, 4, 3, 2, 1],
+            hit_sound: audio_handle
+                .new_sound("assets/hit_block.wav")
+                .expect("Failed to load sound"),
         }
+    }
+
+    pub fn reset(&mut self) {
+        self.grid = [[true; NUM_BLOCKS_X]; NUM_BLOCKS_Y];
     }
 
     pub fn draw(&self, draw_handle: &mut RaylibDrawHandle) {

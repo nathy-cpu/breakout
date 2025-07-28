@@ -27,6 +27,14 @@ impl Ball {
         }
     }
 
+    pub fn reset(&mut self) {
+        self.direction = Vector2 { x: 0.0, y: 1.0 };
+        self.position = Vector2 {
+            x: SCREEN_SIZE as f32 / 2.0,
+            y: BALL_START_POS_Y,
+        };
+    }
+
     pub fn draw(&self, draw_handle: &mut RaylibDrawHandle) {
         draw_handle.draw_circle(
             self.position.x as i32,
