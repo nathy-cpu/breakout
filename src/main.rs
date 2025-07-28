@@ -19,7 +19,7 @@ fn main() {
     ray.set_target_fps(500);
     let audio_device = RaylibAudio::init_audio_device().expect("Failed to initialise audio device");
 
-    let mut game = GameState::new(&audio_device);
+    let mut game = GameState::new(&mut ray, &thread, &audio_device);
 
     let camera = Camera2D {
         zoom: WINDOW_SIZE as f32 / SCREEN_SIZE as f32, // Zoom in to fit canvas

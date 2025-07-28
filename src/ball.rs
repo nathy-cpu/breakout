@@ -1,7 +1,9 @@
 use raylib::{
+    RaylibHandle, RaylibThread,
     color::Color,
     math::Vector2,
     prelude::{RaylibDraw, RaylibDrawHandle},
+    texture::Texture2D,
 };
 
 use crate::SCREEN_SIZE;
@@ -12,18 +14,20 @@ pub const BALL_RADIUS: f32 = 4.0;
 pub struct Ball {
     pub position: Vector2,
     pub direction: Vector2,
-    pub color: Color,
+    pub texture: Texture2D,
 }
 
 impl Ball {
-    pub fn new() -> Self {
+    pub fn new(raylib_handle: &mut RaylibHandle, thread: &RaylibThread) -> Self {
         Self {
             position: Vector2 {
                 x: SCREEN_SIZE as f32 / 2.0,
                 y: BALL_START_POS_Y,
             },
             direction: Vector2 { x: 0.0, y: 1.0 },
-            color: Color::RED,
+            texture: raylib_handle
+                .load_texture(thread, "assets/ball.png")
+                .expect("Failed to load texture"),
         }
     }
 
@@ -36,11 +40,14 @@ impl Ball {
     }
 
     pub fn draw(&self, draw_handle: &mut RaylibDrawHandle) {
-        draw_handle.draw_circle(
-            self.position.x as i32,
-            self.position.y as i32,
-            BALL_RADIUS,
-            self.color,
+        draw_handle.draw_texture_v(
+            &self.texture,
+            self.position
+                - Vector2 {
+                    x: BALL_RADIUS,
+                    y: BALL_RADIUS,
+                },
+            Color::WHITE,
         );
     }
 }

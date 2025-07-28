@@ -1,5 +1,5 @@
 use raylib::{
-    RaylibHandle,
+    RaylibHandle, RaylibThread,
     audio::{RaylibAudio, Sound},
     color::Color,
     ffi::KeyboardKey,
@@ -28,14 +28,18 @@ pub struct GameState<'aud> {
 }
 
 impl<'aud> GameState<'aud> {
-    pub fn new(audio_handle: &'aud RaylibAudio) -> Self {
+    pub fn new(
+        raylib_handle: &mut RaylibHandle,
+        thread: &RaylibThread,
+        audio_handle: &'aud RaylibAudio,
+    ) -> Self {
         Self {
             started: false,
             game_over: false,
             score: 0,
             accumilated_time: 0.0,
-            ball: Ball::new(),
-            paddle: Paddle::new(audio_handle),
+            ball: Ball::new(raylib_handle, thread),
+            paddle: Paddle::new(raylib_handle, thread, audio_handle),
             blocks: Blocks::new(audio_handle),
             game_over_sound: audio_handle
                 .new_sound("assets/game_over.wav")
